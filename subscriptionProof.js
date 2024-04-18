@@ -37,8 +37,6 @@ async function generateCommitment() {
 async function prepareProofFile() {
 
 	const commitments = await getPastEvents();
-    console.log(commitments);
-    
     const mimc = await buildMimcSponge();
     const levels = await merkleTreeContract.levels(); 
 	const null_n_secret = fs.readFileSync("./null_n_secret_subscription.json", "utf-8");
@@ -108,7 +106,7 @@ function calculateMerkleRootAndPath(mimc, levels, elements, element) {
 
         const bne = ethers.BigNumber.from(element);
         let index = layers[0].findIndex(e => ethers.BigNumber.from(e).eq(bne));
-
+        
         for (let i = 0; i < levels; i++) {
             pathIndices[i] = index % 2;
             pathElements[i] = (index ^ 1) < layers[i].length ? layers[i][index ^ 1] : zeros[i];

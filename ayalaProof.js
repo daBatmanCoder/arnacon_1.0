@@ -11,13 +11,13 @@ const ZERO_VALUE = ethers.BigNumber.from('21663839004416932945382355908790599225
 const contractABI = require('./contracts/ayalaABI.json');
 const contractAddressPath = path.join(__dirname, './contracts/ayalaAddress.txt');
 const contractAddress = fs.readFileSync(contractAddressPath, 'utf8').trim();
-const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.infura.io/v3/97d9c59729a745b790c2b1118ba098ef");
+const provider = new ethers.providers.JsonRpcProvider("https://polygon-amoy-bor-rpc.publicnode.com");
 const PRIVATE_KEY = "1cf3bacf75f3c8580aabf395ddb3eb5bf2943ce44cc9907a60802a305c3f4e09"
 const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
 const merkleTreeContract = new ethers.Contract(contractAddress, contractABI, wallet);
 
 
-let web3 = new Web3(new Web3.providers.HttpProvider('https://polygon-mumbai.infura.io/v3/97d9c59729a745b790c2b1118ba098ef'));
+let web3 = new Web3(new Web3.providers.HttpProvider('https://polygon-amoy-bor-rpc.publicnode.com'));
 let web3Contract = new web3.eth.Contract(contractABI, contractAddress);
 
 async function generateCommitment() {
@@ -37,6 +37,7 @@ async function generateCommitment() {
 async function prepareProofFile() {
 
 	const commitments = await getPastEvents();
+    console.log(commitments);   
     const mimc = await buildMimcSponge();
     const levels = await merkleTreeContract.levels(); 
 	const null_n_secret = fs.readFileSync("./null_n_secret.json", "utf-8");
@@ -155,8 +156,10 @@ async function callCommitDeposit(commitment) {
 
 async function getPastEvents() {
     try{
+        // for (let i = 0; i < 10; i++) {
+        // }
         const events = await web3Contract.getPastEvents('Commit', {
-            fromBlock: 0, // Use appropriate block number to limit search range
+            fromBlock: 6007310, // Use appropriate block number to limit search range
             toBlock: 'latest'
         });
         const commitments = events.map(events => events.returnValues.commitment);

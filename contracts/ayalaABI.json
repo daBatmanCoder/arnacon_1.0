@@ -2,9 +2,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "bytes32",
+				"internalType": "uint256",
 				"name": "_commitmentDeposit",
-				"type": "bytes32"
+				"type": "uint256"
 			}
 		],
 		"name": "_createCommitmentToRegisterENS",
@@ -30,14 +30,19 @@
 				"type": "uint256[2]"
 			},
 			{
-				"internalType": "bytes32",
+				"internalType": "uint256",
 				"name": "_nullifierHash",
-				"type": "bytes32"
+				"type": "uint256"
 			},
 			{
-				"internalType": "bytes32",
+				"internalType": "uint256",
 				"name": "_root",
-				"type": "bytes32"
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_signature",
+				"type": "bytes"
 			},
 			{
 				"internalType": "string",
@@ -71,6 +76,16 @@
 				"internalType": "contract IVerifierAyala",
 				"name": "_verifier",
 				"type": "address"
+			},
+			{
+				"internalType": "contract IENS",
+				"name": "_ens",
+				"type": "address"
+			},
+			{
+				"internalType": "contract IVerifierSignature",
+				"name": "_verifierSignature",
+				"type": "address"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -102,6 +117,45 @@
 		"type": "event"
 	},
 	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "data",
+				"type": "address"
+			}
+		],
+		"name": "showAddress",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "data",
+				"type": "bool"
+			}
+		],
+		"name": "showBool",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "data",
+				"type": "string"
+			}
+		],
+		"name": "showString",
+		"type": "event"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -128,6 +182,19 @@
 				"internalType": "uint32",
 				"name": "",
 				"type": "uint32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "ens",
+		"outputs": [
+			{
+				"internalType": "contract IENS",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -393,11 +460,43 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "uint256ToDecimalString",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "verifierAyala",
 		"outputs": [
 			{
 				"internalType": "contract IVerifierAyala",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "verifierSignature",
+		"outputs": [
+			{
+				"internalType": "contract IVerifierSignature",
 				"name": "",
 				"type": "address"
 			}
