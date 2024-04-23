@@ -29,32 +29,32 @@ template CommitmentHasher() {
 template subscription(levels) {
     signal input nullifier;
     signal input secret;
+    signal input productID;
     signal input pathElements[levels];
     signal input pathIndices[levels];
-    signal input productID;
     signal output nullifierHash;
     signal output root;
-    signal output productHash;
 
-    component commitmentHasher = CommitmentHasher();
+    component commitmentPre = CommitmentHasher();
+    component commitmentFinal = CommitmentHasher();
+
     component merkleTreeChecker = MerkleTreeChecker(levels);
 
-    commitmentHasher.nullifier <== nullifier;
-    commitmentHasher.secret <== secret;
+    commitmentPre.nullifier <== nullifier;
+    commitmentPre.secret <== secret;
 
-    merkleTreeChecker.leaf <== commitmentHasher.commitment;
+    commitmentFinal.nullifier <== commitmentPre.commitment;
+    commitmentFinal.secret <== productID;
+    
+
+    merkleTreeChecker.leaf <== commitmentFinal.commitment;
     for (var i = 0; i < levels; i++) {
         merkleTreeChecker.pathElements[i] <== pathElements[i];
         merkleTreeChecker.pathIndices[i] <== pathIndices[i];
     }
 
-    component productHasher = MiMCSponge(1, 220, 1);
-    productHasher.ins[0] <== productID;
-    productHasher.k <== 0;
-
-    nullifierHash <== commitmentHasher.nullifierHash;
+    nullifierHash <== commitmentPre.nullifierHash;
     root <== merkleTreeChecker.root;
-    productHash <== productHasher.outs[0];
 }
 
 component main = subscription(20);
